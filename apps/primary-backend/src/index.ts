@@ -1,4 +1,9 @@
-import { add } from "@repo/utils/add";
+import express from "express";
 
-add(11, 2);
-console.log("we have compiled the code");
+const app = express();
+
+app.use(express.json());
+
+app.listen(3000, () => {
+  console.log("server is listening");
+});
