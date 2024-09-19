@@ -3,6 +3,7 @@ import { SigninSchema, SignupSchema } from "../types/types";
 import client from "@repo/db/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import authMiddleware from "../middleware";
 
 const SALT_ROUNDS = 10;
 
@@ -99,5 +100,18 @@ router.post("/signin", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {});
+router.get("/", authMiddleware, async (req, res) => {
+  //@ts-ignore
+  const id = req.id;
+  const user = await db.user.findFirst({
+    where: {
+      id,
+    },
+    select: {
+      name: true,
+      email: true,
+    },
+  });
+  res.status(200).json({ user });
+});
 export const userRouter = router;
