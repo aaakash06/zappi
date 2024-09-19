@@ -58,5 +58,62 @@ router.post("/", authMiddleware, async (req, res) => {
     res.status(403).json({ message: "some error occured" });
   }
 });
+router.get("/", authMiddleware, async (req, res) => {
+  //@ts-ignore
+  const id: string = req.id;
+  try {
+    const allZaps = await db.zap.findMany({
+      where: {
+        userId: parseInt(id),
+      },
+      include: {
+        actions: {
+          include: {
+            type: true,
+          },
+        },
+        trigger: {
+          include: {
+            type: true,
+          },
+        },
+      },
+    });
+    res.status(200).json({ zaps: allZaps });
+  } catch (e) {
+    console.log("error while create zap ");
+    res.status(403).json({ message: "some error occured" });
+  }
+});
+router.get("/:zapId", authMiddleware, async (req, res) => {
+  //@ts-ignore
+  const id = req.id;
+  const zapId = req.params.zapId;
+
+  try {
+    const zap = await db.zap.findFirst({
+      where: {
+        id: zapId,
+        userId: parseInt(id),
+      },
+      include: {
+        actions: {
+          include: {
+            type: true,
+          },
+        },
+        trigger: {
+          include: {
+            type: true,
+          },
+        },
+      },
+    });
+    return res.status(200).json({ zap });
+  } catch (e) {
+    console.log("error while create zap ");
+    res.status(403).json({ message: "some error occured" });
+  }
+});
 
 export const zapRouter = router;
