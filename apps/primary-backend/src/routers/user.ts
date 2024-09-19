@@ -54,3 +54,5 @@ router.post("/signup", async (req, res) => {
     res.status(400).json({ message: "some error occured in the server" });
   }
 });
+
+export const userRouter = router;
