@@ -99,4 +99,5 @@ router.post("/signin", async (req, res) => {
   }
 });
 
+router.get("/", async (req, res) => {});
 export const userRouter = router;
