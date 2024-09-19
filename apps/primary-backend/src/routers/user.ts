@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { SigninSchema, SignupSchema } from "../types/types";
 import client from "@repo/db/client";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import authMiddleware from "../middleware";
 
