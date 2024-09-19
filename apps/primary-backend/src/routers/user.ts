@@ -1,7 +1,8 @@
 import { Router } from "express";
-import { SignupSchema } from "../types/types";
+import { SigninSchema, SignupSchema } from "../types/types";
 import client from "@repo/db/client";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const SALT_ROUNDS = 10;
 
@@ -48,6 +49,49 @@ router.post("/signup", async (req, res) => {
     res.status(200).json({ message: "Verify your email" });
 
     // send verification email
+  } catch (e) {
+    console.log("some error occured in signup");
+    console.log(e);
+    res.status(400).json({ message: "some error occured in the server" });
+  }
+});
+router.post("/signin", async (req, res) => {
+  try {
+    const body = req.body;
+    const parsedData = SigninSchema.safeParse(body);
+    if (!parsedData.success) {
+      console.log("wrong req body for signin");
+      return res.status(411).json({
+        message: "Incorrect req body",
+      });
+    }
+    const email = parsedData.data.email;
+    const user = await db.user.findFirst({
+      where: {
+        email,
+      },
+    });
+    if (!user) {
+      console.log("no user found with same email");
+      return res.status(403).json({
+        message: "you are not registered",
+      });
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(
+      parsedData.data.password,
+      user.password
+    );
+
+    if (isPasswordCorrect) {
+      const token = jwt.sign(
+        { id: user.id },
+        process.env.JWT_SECRET || "somepasswordsecret"
+      );
+      res.status(200).json({ token });
+    } else {
+      res.status(403).json({ message: "wrong credentials" });
+    }
   } catch (e) {
     console.log("some error occured in signup");
     console.log(e);
