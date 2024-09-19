@@ -17,7 +17,7 @@ export const zapCreateSchema = z.object({
   actions: z.array(
     z.object({
       availableActionId: z.string(), // send email
-      actionMetadata: z.string(), // specific email
+      actionMetadata: z.string().optional(), // specific email
     })
   ),
 });
