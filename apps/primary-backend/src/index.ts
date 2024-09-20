@@ -10,6 +10,10 @@ app.use(cors());
 
 app.use("/user", userRouter);
 app.use("/zap", zapRouter);
+app.get("/api/v1", (req, res) => {
+  console.log("api was hit");
+  res.json("api was hit");
+});
 
 app.listen(3000, () => {
   console.log("server is listening");
