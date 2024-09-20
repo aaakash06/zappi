@@ -18,6 +18,7 @@ const main = async () => {
       where: {},
       take: 10,
     });
+    console.log(pendingRows);
     // Producing
     await producer.send({
       topic: TOPIC_NAME,
