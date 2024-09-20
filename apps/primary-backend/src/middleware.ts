@@ -14,7 +14,6 @@ export default async function authMiddleware(
   if (!token) {
     return res.status(403).json({ message: "invalid auth token found" });
   }
-  console.log(token);
   try {
     const payload = verify(
       token,
