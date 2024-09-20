@@ -73,3 +73,49 @@ docker ps
 
 docker ps -a
 ```
+
+---
+
+# Kafka Local
+
+```sh
+docker run -p 9092:9092 --name kafka-local apache/kafka:3.7.1
+```
+
+# Get shell access to container
+
+```sh
+docker ps
+docker exec -it container_id /bin/bash
+cd /opt/kafka/bin
+```
+
+# Create a topic
+
+```sh
+./kafka-topics.sh --create --topic quickstart-events --bootstrap-server localhost:9092
+```
+
+# Publish to the topic
+
+```sh
+./kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092
+```
+
+# Consuming from the topic
+
+```sh
+./kafka-console-consumer.sh --topic quickstart-events --from-beginning --bootstrap-server localhost:9092
+```
+
+# Create a new topic with 3 partitions
+
+```sh
+./kafka-topics.sh --create --topic payment-done --partitions 3 --bootstrap-server localhost:9092
+```
+
+# Ensure it has 3 partitions
+
+```sh
+./kafka-topics.sh --describe --topic payment-done --bootstrap-server localhost:9092
+```
