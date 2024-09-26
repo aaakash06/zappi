@@ -1,3 +1,13 @@
+Zappi is an automation tool like zapier.
+
+Tech Stack:
+● Turbo Repo for efficient monorepo management.
+● NextJS
+● Postgres
+● Kafka for real-time event streaming.
+● Nodejs and Expressjs for Webhooks and server logic
+● Prisma ORM for streamlined data modeling.
+
 # Turborepo starter
 
 This is an official starter Turborepo.
